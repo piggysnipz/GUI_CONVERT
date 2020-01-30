@@ -64,9 +64,8 @@ var.trace("w", get_dropdown)
 try:
     firstButton = Button(root,text="Calculate", command = get_dropdown)
     firstButton.pack()
-
-
-
+    #Tk main loop
     root.mainloop()
 
-except: print("An Error has occured")
+except:
+    print("An Error has occured")
