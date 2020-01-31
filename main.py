@@ -4,68 +4,62 @@ root = Tk()
 root.title("SecondsConverter")
 
 units_of_time = ["Minutes","Hours","Days"]
+units_of_time_2 = ["Seconds", "Minutes", "Hours"]
 
 var = StringVar(root)
 var.set(units_of_time[0])
 
+var_2 = StringVar(root)
+var_2.set(units_of_time_2[0])
+
 dropDown = OptionMenu(root,var,*units_of_time)
-dropDown.pack()
+dropDown.grid(column = 2, row = 2)
 
-label_1 = Label(root,text="Seconds")
-label_1.pack()
+dropDown_2 = OptionMenu(root,var_2,*units_of_time_2)
+dropDown_2.grid(column=2, row = 1)
 
-entry_1 = Entry(root, width = 35)
-entry_1.pack()
+label_1 = Label(root,text = "CONVERT ------>")
+label_1.grid(column = 1, row = 1)
 
+label_2 = Label(root, text = "TO ------>")
+label_2.grid(column =1 , row =2)
 
-global mode
+entry_1 = Entry(root, width = 35, borderwidth =5)
+entry_1.grid(column = 2, row =3)
 
-def add_min(sec):
-    seconds = entry_1.get()
-    minutes = int(seconds) / 60
-    adding = Label(root,text="Minutes:" + str(minutes))
-    adding.pack()
+def calculate(*args):
+        num = int(entry_1.get())
+        entry_1.delete(0, END)
 
-def add_hour(sec):
-    seconds = entry_1.get()
-    hours = int(seconds) / 3600
-    adding = Label(root,text="Hours:" + str(hours))
-    adding.pack()
-
-
-def add_day(sec):
-    seconds = entry_1.get()
-    days = int(seconds) / 86400
-    adding = Label(root,text="Days:" +str(days))
-    adding.pack()
-
-def get_dropdown(*args):
-    if(len(entry_1.get()) > 0):
-        try:
-            #int(5)
-            #int(a) WOULD NOT WORK
-            placeholder_int = int(entry_1.get())
+        if var_2.get() == "Seconds":
             if var.get() == "Minutes":
-                return add_min(entry_1.get())
+                entry_1.insert(0,num / 60)
             if var.get() == "Hours":
-                return add_hour(entry_1.get())
+                entry_1.insert(0,num / 3600)
             if var.get() == "Days":
-                return add_day(entry_1.get())
-        except:
-            print("An error has occured. The input field is not an int.")
-            adding = Label(root,text="Value not integer")
-            adding.pack()
+                entry_1.insert(0,num / 86400)
 
-    print (var.get())
+        if var_2.get() == "Minutes":
+            if var.get() == "Minutes":
+                entry_1.insert(0,"1")
+            if var.get() == "Hours":
+                entry_1.insert(0, num / 60)
+            if var.get() == "Days":
+                entry_1.insert(0,num / 1440)
+                
 
-var.trace("w", get_dropdown)
-
+        if var_2.get() == "Hours":
+            if var.get() == "Minutes":
+                entry_1.insert(0,num * 60)
+            if var.get() == "Hours":
+                entry_1.insert(0, num * 1)
+            if var.get() == "Days":
+                entry_1.insert(0,num / 24)
 
 try:
-    firstButton = Button(root,text="Calculate", command = get_dropdown)
-    firstButton.pack()
-    #Tk main loop
+    firstButton = Button(root,text="Calculate",padx=5,pady=5, command = calculate)
+    firstButton.grid(column =2, row =4)
+        
     root.mainloop()
 
-except:
-    print("An Error has occured")
+except: print("An Error has occured")
